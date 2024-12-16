@@ -1,3 +1,4 @@
+import axios from "axios";
 import Lottie from "lottie-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import home from "../assets/lottiefiles/home.json";
@@ -20,8 +21,15 @@ export default function Login() {
     // login user
     loginUser(email, password)
       .then((result) => {
-        console.log(result);
-        navigate(from);
+        const user = { email: result.user.email };
+        axios
+          .post("http://localhost:3000/jwt", user, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            console.log(res);
+          });
+        // navigate(from);
       })
       .catch((error) => {
         console.log(error);

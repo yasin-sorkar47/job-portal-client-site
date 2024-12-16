@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 export default function Header() {
   const { user, logOutUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
     logOutUser()
       .then(() => {
         console.log("user log out");
+        navigate("/login");
       })
       .catch((error) => {
         console.log(error);

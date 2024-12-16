@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -7,10 +8,18 @@ export default function MyApplications() {
   const { user } = useAuth();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/job-application?email=${user?.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMyApplications(data);
+    // fetch(`http://localhost:3000/job-application?email=${user?.email}`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setMyApplications(data);
+    //   });
+
+    axios
+      .get(`http://localhost:3000/job-application?email=${user?.email}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setMyApplications(res.data);
       });
   }, [user?.email]);
 
