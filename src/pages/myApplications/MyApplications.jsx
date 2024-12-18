@@ -1,11 +1,12 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
 
 export default function MyApplications() {
   const [myApplications, setMyApplications] = useState([]);
   const { user } = useAuth();
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     // fetch(`http://localhost:3000/job-application?email=${user?.email}`)
@@ -14,13 +15,9 @@ export default function MyApplications() {
     //     setMyApplications(data);
     //   });
 
-    axios
-      .get(`http://localhost:3000/job-application?email=${user?.email}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setMyApplications(res.data);
-      });
+    axiosInstance
+      .get(`/job-application?email=${user?.email}`)
+      .then((res) => setMyApplications(res.data));
   }, [user?.email]);
 
   return (
@@ -42,7 +39,7 @@ export default function MyApplications() {
             </tr>
           </thead>
           <tbody>
-            {myApplications.map((job) => (
+            {myApplications?.map((job) => (
               <tr key={job._id}>
                 <th>
                   <label>
